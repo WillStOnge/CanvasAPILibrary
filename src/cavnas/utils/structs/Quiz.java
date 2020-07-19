@@ -1,35 +1,5 @@
 package cavnas.utils.structs;
 
-public class LockInfo
-{
-    public Date lock_at;
-    public boolean can_view;
-    public String asset_string;
-}
-
-public class AllDate
-{
-    public Date due_at;
-    public Date unlock_at;
-    public Date lock_at;
-    public boolean base;
-}
-
-public class Permissions
-{
-    public boolean manage;
-    public boolean read;
-    public boolean update;
-    public boolean create;
-    public boolean submit;
-    public boolean preview;
-    public boolean delete;
-    public boolean read_statistics;
-    public boolean grade;
-    public boolean review_grades;
-    public boolean view_answer_audits;
-}
-
 public class Quiz
 {
     public int id;
@@ -77,4 +47,34 @@ public class Quiz
     public boolean has_access_code;
     public boolean post_to_sis;
     public String migration_id;
+}
+
+public class LockInfo
+{
+    public Date lock_at;
+    public boolean can_view;
+    public String asset_string;
+}
+
+public class AllDate
+{
+    public Date due_at;
+    public Date unlock_at;
+    public Date lock_at;
+    public boolean base;
+}
+
+public class Permissions
+{
+    public boolean manage;
+    public boolean read;
+    public boolean update;
+    public boolean create;
+    public boolean submit;
+    public boolean preview;
+    public boolean delete;
+    public boolean read_statistics;
+    public boolean grade;
+    public boolean review_grades;
+    public boolean view_answer_audits;
 }
