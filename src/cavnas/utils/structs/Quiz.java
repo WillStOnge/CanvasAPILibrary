@@ -1,5 +1,11 @@
 package cavnas.utils.structs;
 
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Container for a quiz in Canvas.
+ */
 public class Quiz
 {
     public int id;
@@ -47,16 +53,23 @@ public class Quiz
     public boolean has_access_code;
     public boolean post_to_sis;
     public String migration_id;
+    public List<String> question_types;
 }
 
-public class LockInfo
+/**
+ * Lock information for a quiz.
+ */
+class LockInfo
 {
     public Date lock_at;
     public boolean can_view;
     public String asset_string;
 }
 
-public class AllDate
+/**
+ * Element of the all_dates list which specifies when a quiz will lock/unlock and when its due.
+ */
+class AllDate
 {
     public Date due_at;
     public Date unlock_at;
@@ -64,7 +77,10 @@ public class AllDate
     public boolean base;
 }
 
-public class Permissions
+/**
+ * Permissions for the accessor of the quiz.
+ */
+class Permissions
 {
     public boolean manage;
     public boolean read;
