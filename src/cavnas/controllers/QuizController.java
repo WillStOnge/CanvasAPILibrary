@@ -2,8 +2,11 @@ package cavnas.controllers;
 
 import cavnas.utils.structs.Quiz;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Controller for all operations on quizzes in Canvas.
@@ -56,5 +59,40 @@ public class QuizController extends Controller
         }
 
         return new Gson().fromJson(json, Quiz.class);
+    }
+
+    /**
+     * @param canvasUrl  URL to your canvas instance (Ex. https://test.instructure.com)
+     * @param token      Bearer token used to authenticate with the Canvas API
+     * @param courseId   Course which contains the desired quizzes
+     * @param searchTerm The partial title of the quizzes to match and return
+     * @return Returns an array list of quizzes containing the search term, if there is an error, returns null
+     */
+    public static ArrayList<Quiz> getQuizzes(String canvasUrl, String token, Integer courseId, String searchTerm)
+    {
+        String uRL = canvasUrl + "/api/v1/courses/" + courseId + "/quizzes";
+        ArrayList<Quiz> quizArrayList;
+        if(!searchTerm.equals(""))
+        {
+            uRL = uRL + "?search_term=" + searchTerm;
+        }
+        try
+        {
+            URL url = new URL(uRL);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String jsonString = run(Method.GET, url, token, null);
+            Quiz[] quizzes = gson.fromJson(jsonString, Quiz[].class);
+            quizArrayList = new ArrayList<>(quizzes.length);
+            for(int x = 0; x < quizzes.length; x++)
+            {
+                quizArrayList.add(quizzes[0]);
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        return quizArrayList;
     }
 }
