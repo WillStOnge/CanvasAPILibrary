@@ -68,10 +68,11 @@ public class QuizController extends Controller
      * @param token      Bearer token used to authenticate with the Canvas API
      * @param courseId   Course which contains the desired quizzes
      * @param searchTerm The partial title of the quizzes to match and return, if no search term wanted use null
-     * @param perPage    The number of quizzes to return at one time, if passed null will default to 10
+     * @param page       Which page of the list to return, if passed null defaults to 1
+     * @param perPage    The number of quizzes per page, if passed null defaults to 10
      * @return Returns an array list of quizzes containing the search term, if there is an error, returns null
      */
-    public static ArrayList<Quiz> getQuizzes(String canvasUrl, String token, Integer courseId, String searchTerm, Integer perPage)
+    public static ArrayList<Quiz> getQuizzes(String canvasUrl, String token, Integer courseId, String searchTerm, Integer page, Integer perPage)
     {
         String urlString = canvasUrl + "/api/v1/courses/" + courseId + "/quizzes";
         String jsonString;
@@ -81,7 +82,11 @@ public class QuizController extends Controller
         }
         if(perPage != null)
         {
-            urlString += "&per_page=" + perPage;
+            urlString += (searchTerm == null ? "?" : "&") + "per_page=" + perPage;
+        }
+        if(page != null)
+        {
+            urlString += (searchTerm == null && perPage == null ? "?" : "&") + "page=" + perPage;
         }
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try
