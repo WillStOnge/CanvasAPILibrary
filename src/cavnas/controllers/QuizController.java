@@ -1,5 +1,7 @@
 package cavnas.controllers;
 
+import cavnas.utils.structs.Quiz;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.URL;
 
@@ -29,5 +31,22 @@ public class QuizController extends Controller
         }
 
         return true;
+    }
+
+    public static Quiz getQuiz(String canvasUrl, String token, Integer courseId, Integer quizId)
+    {
+        String json;
+        try
+        {
+            URL url = new URL(canvasUrl + "/api/v1/courses/" + courseId + "/quizzes/" + quizId);
+            json=run(Method.GET, url, token, null);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        return new Gson().fromJson(json, Quiz.class);
     }
 }
