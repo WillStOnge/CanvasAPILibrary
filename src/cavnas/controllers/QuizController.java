@@ -3,6 +3,7 @@ package cavnas.controllers;
 import cavnas.utils.structs.Quiz;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.internal.$Gson$Preconditions;
 
 import java.io.IOException;
 import java.net.URL;
@@ -66,29 +67,28 @@ public class QuizController extends Controller
      * @param canvasUrl  URL to your canvas instance (Ex. https://test.instructure.com)
      * @param token      Bearer token used to authenticate with the Canvas API
      * @param courseId   Course which contains the desired quizzes
-     * @param searchTerm The partial title of the quizzes to match and return
+     * @param searchTerm The partial title of the quizzes to match and return, if no search term wanted use null
      * @return Returns an array list of quizzes containing the search term, if there is an error, returns null
      */
     public static ArrayList<Quiz> getQuizzes(String canvasUrl, String token, Integer courseId, String searchTerm)
     {
         String urlString = canvasUrl + "/api/v1/courses/" + courseId + "/quizzes";
-        ArrayList<Quiz> quizArrayList;
-        if(!searchTerm.equals(""))
+        String jsonString;
+        if(searchTerm != null)
         {
-            urlString = urlString + "?search_term=" + searchTerm;
+            urlString += "?search_term=" + searchTerm;
         }
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try
         {
             URL url = new URL(urlString);
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            String jsonString = run(Method.GET, url, token, null);
-            quizArrayList = new ArrayList<>(Arrays.asList(gson.fromJson(jsonString, Quiz[].class)));
+            jsonString = run(Method.GET, url, token, null);
         }
         catch (IOException e)
         {
             e.printStackTrace();
             return null;
         }
-        return quizArrayList;
+        return new ArrayList<Quiz>(Arrays.asList(gson.fromJson(jsonString, Quiz[].class)));
     }
 }
