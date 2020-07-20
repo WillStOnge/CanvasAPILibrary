@@ -1,5 +1,7 @@
 package cavnas.controllers;
 
+import cavnas.utils.structs.Quiz;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.URL;
 
@@ -29,5 +31,30 @@ public class QuizController extends Controller
         }
 
         return true;
+    }
+
+    /**
+     * @param canvasUrl URL to your canvas instance (Ex. https://test.instructure.com)
+     * @param token     Bearer token used to authenticate with the Canvas API
+     * @param courseId  Course which contains the desired quiz
+     * @param quizId    Quiz you want to get
+     * @return Returns the quiz requested, if there is an error, the method will return null.
+     */
+    public static Quiz getQuiz(String canvasUrl, String token, Integer courseId, Integer quizId)
+    {
+        String json;
+
+        try
+        {
+            URL url = new URL(canvasUrl + "/api/v1/courses/" + courseId + "/quizzes/" + quizId);
+            json = run(Method.GET, url, token, null);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        return new Gson().fromJson(json, Quiz.class);
     }
 }

@@ -1,5 +1,11 @@
 package cavnas.utils.structs;
 
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Container for a quiz in Canvas.
+ */
 public class Quiz
 {
     public int id;
@@ -47,34 +53,44 @@ public class Quiz
     public boolean has_access_code;
     public boolean post_to_sis;
     public String migration_id;
-}
+    public List<String> question_types;
 
-public class LockInfo
-{
-    public Date lock_at;
-    public boolean can_view;
-    public String asset_string;
-}
+    /**
+     * Lock information for a quiz.
+     */
+    public class LockInfo
+    {
+        public Date lock_at;
+        public boolean can_view;
+        public String asset_string;
+    }
 
-public class AllDate
-{
-    public Date due_at;
-    public Date unlock_at;
-    public Date lock_at;
-    public boolean base;
-}
+    /**
+     * Element of the all_dates list which specifies when a quiz will lock/unlock and when its due.
+     */
+    public class AllDate
+    {
+        public Date due_at;
+        public Date unlock_at;
+        public Date lock_at;
+        public boolean base;
+    }
 
-public class Permissions
-{
-    public boolean manage;
-    public boolean read;
-    public boolean update;
-    public boolean create;
-    public boolean submit;
-    public boolean preview;
-    public boolean delete;
-    public boolean read_statistics;
-    public boolean grade;
-    public boolean review_grades;
-    public boolean view_answer_audits;
+    /**
+     * Permissions for the accessor of the quiz.
+     */
+    public class Permissions
+    {
+        public boolean manage;
+        public boolean read;
+        public boolean update;
+        public boolean create;
+        public boolean submit;
+        public boolean preview;
+        public boolean delete;
+        public boolean read_statistics;
+        public boolean grade;
+        public boolean review_grades;
+        public boolean view_answer_audits;
+    }
 }

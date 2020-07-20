@@ -66,11 +66,3 @@ enum Method
         return name;
     }
 }
-
-class EndpointException extends Exception
-{
-    public EndpointException(String s)
-    {
-        super(s);
-    }
-}
