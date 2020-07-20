@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Controller for all operations on quizzes in Canvas.
@@ -70,23 +71,18 @@ public class QuizController extends Controller
      */
     public static ArrayList<Quiz> getQuizzes(String canvasUrl, String token, Integer courseId, String searchTerm)
     {
-        String uRL = canvasUrl + "/api/v1/courses/" + courseId + "/quizzes";
+        String urlString = canvasUrl + "/api/v1/courses/" + courseId + "/quizzes";
         ArrayList<Quiz> quizArrayList;
         if(!searchTerm.equals(""))
         {
-            uRL = uRL + "?search_term=" + searchTerm;
+            urlString = urlString + "?search_term=" + searchTerm;
         }
         try
         {
-            URL url = new URL(uRL);
+            URL url = new URL(urlString);
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String jsonString = run(Method.GET, url, token, null);
-            Quiz[] quizzes = gson.fromJson(jsonString, Quiz[].class);
-            quizArrayList = new ArrayList<>(quizzes.length);
-            for(int x = 0; x < quizzes.length; x++)
-            {
-                quizArrayList.add(quizzes[0]);
-            }
+            quizArrayList = new ArrayList<>(Arrays.asList(gson.fromJson(jsonString, Quiz[].class)));
         }
         catch (IOException e)
         {
