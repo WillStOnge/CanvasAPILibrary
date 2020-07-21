@@ -3,7 +3,6 @@ package cavnas.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-
 import cavnas.utils.structs.Quiz;
 import cavnas.utils.structs.QuizSubmission;
 import com.google.gson.Gson;
@@ -26,7 +25,8 @@ public class QuizSubmissionController extends Controller
         {
             URL url = new URL(canvasUrl + "/api/v1/courses/" + courseId + "/quizzes/" + quizId + "/submissions/" + submissionId);
             json = run(Method.GET, url, token, null);
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
             return null;
@@ -64,7 +64,8 @@ public class QuizSubmissionController extends Controller
         {
             URL url = new URL(canvasUrl + "/api/v1/courses/" + courseId + "/quizzes/" + quizId + "/submissions");
             json = run(Method.GET, url, token, null);
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
             return null;
@@ -83,10 +84,8 @@ public class QuizSubmissionController extends Controller
                 return (QuizSubmission) submissions.quiz_submissions;
             else if ( permissions.submit )
                 return submissions.quiz_submissions.get(0);
-            else if (/*use has in_progress submissions*/)
-                return /*that specific submission that is still in_progress*/
+            //else if (use has in_progress submissions*/)
+            //   return that specific submission that is still in_progress
         return null;
-
     }
-
 }
