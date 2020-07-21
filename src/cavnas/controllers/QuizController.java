@@ -2,13 +2,14 @@ package cavnas.controllers;
 
 import cavnas.utils.structs.Quiz;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.internal.$Gson$Preconditions;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 
 /**
  * Controller for all operations on quizzes in Canvas.
@@ -68,27 +69,22 @@ public class QuizController extends Controller
      * @param token      Bearer token used to authenticate with the Canvas API
      * @param courseId   Course which contains the desired quizzes
      * @param searchTerm The partial title of the quizzes to match and return, if no search term wanted use null
-     * @param page       Which page of the list to return, if passed null defaults to 1
-     * @param perPage    The number of quizzes per page, if passed null defaults to 10
+     * @param page       Which page of the list to return. If null, defaults to 1
+     * @param perPage    The number of quizzes per page. If null, defaults to 10
      * @return Returns an array list of quizzes containing the search term, if there is an error, returns null
      */
-    public static ArrayList<Quiz> getQuizzes(String canvasUrl, String token, Integer courseId, String searchTerm, Integer page, Integer perPage)
+    public static List<Quiz> getQuizzes(String canvasUrl, String token, Integer courseId, String searchTerm, Integer page, Integer perPage)
     {
-        String urlString = canvasUrl + "/api/v1/courses/" + courseId + "/quizzes";
-        String jsonString;
-        if(searchTerm != null)
-        {
+        Type quizList = new TypeToken<List<Quiz>>(){}.getType();
+        String urlString = canvasUrl + "/api/v1/courses/" + courseId + "/quizzes", jsonString;
+
+        if(searchTerm != null && searchTerm != "")
             urlString += "?search_term=" + searchTerm;
-        }
         if(perPage != null)
-        {
             urlString += (searchTerm == null ? "?" : "&") + "per_page=" + perPage;
-        }
         if(page != null)
-        {
             urlString += (searchTerm == null && perPage == null ? "?" : "&") + "page=" + perPage;
-        }
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
         try
         {
             URL url = new URL(urlString);
@@ -99,6 +95,7 @@ public class QuizController extends Controller
             e.printStackTrace();
             return null;
         }
-        return new ArrayList<Quiz>(Arrays.asList(gson.fromJson(jsonString, Quiz[].class)));
+
+        return new Gson().fromJson(jsonString, quizList);
     }
 }
