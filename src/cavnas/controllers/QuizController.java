@@ -78,12 +78,12 @@ public class QuizController extends Controller
         Type quizList = new TypeToken<List<Quiz>>(){}.getType();
         String urlString = canvasUrl + "/api/v1/courses/" + courseId + "/quizzes", jsonString;
 
-        if(searchTerm != null && searchTerm != "")
+        if(searchTerm != null)
             urlString += "?search_term=" + searchTerm;
         if(perPage != null)
             urlString += (searchTerm == null ? "?" : "&") + "per_page=" + perPage;
         if(page != null)
-            urlString += (searchTerm == null && perPage == null ? "?" : "&") + "page=" + perPage;
+            urlString += (searchTerm == null && perPage == null ? "?" : "&") + "page=" + page;
 
         try
         {
