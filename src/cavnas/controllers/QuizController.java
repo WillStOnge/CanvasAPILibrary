@@ -2,8 +2,14 @@ package cavnas.controllers;
 
 import cavnas.utils.structs.Quiz;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.URL;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 /**
  * Controller for all operations on quizzes in Canvas.
@@ -56,5 +62,40 @@ public class QuizController extends Controller
         }
 
         return new Gson().fromJson(json, Quiz.class);
+    }
+
+    /**
+     * @param canvasUrl  URL to your canvas instance (Ex. https://test.instructure.com)
+     * @param token      Bearer token used to authenticate with the Canvas API
+     * @param courseId   Course which contains the desired quizzes
+     * @param searchTerm The partial title of the quizzes to match and return, if no search term wanted use null
+     * @param page       Which page of the list to return. If null, defaults to 1
+     * @param perPage    The number of quizzes per page. If null, defaults to 10
+     * @return Returns an array list of quizzes containing the search term, if there is an error, returns null
+     */
+    public static List<Quiz> getQuizzes(String canvasUrl, String token, Integer courseId, String searchTerm, Integer page, Integer perPage)
+    {
+        Type quizList = new TypeToken<List<Quiz>>(){}.getType();
+        String urlString = canvasUrl + "/api/v1/courses/" + courseId + "/quizzes", jsonString;
+
+        if(searchTerm != null)
+            urlString += "?search_term=" + searchTerm;
+        if(perPage != null)
+            urlString += (searchTerm == null ? "?" : "&") + "per_page=" + perPage;
+        if(page != null)
+            urlString += (searchTerm == null && perPage == null ? "?" : "&") + "page=" + page;
+
+        try
+        {
+            URL url = new URL(urlString);
+            jsonString = run(Method.GET, url, token, null);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        return new Gson().fromJson(jsonString, quizList);
     }
 }

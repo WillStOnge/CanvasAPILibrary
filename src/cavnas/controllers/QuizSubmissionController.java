@@ -3,7 +3,6 @@ package cavnas.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import cavnas.utils.structs.Quiz;
 import cavnas.utils.structs.QuizSubmission;
 import com.google.gson.Gson;
 
@@ -40,14 +39,6 @@ public class QuizSubmissionController extends Controller
     }
 
     /**
-     * Private inner class for converting JSON into a QuizSubmission object properly.
-     */
-    private class QuizSubmissions
-    {
-        public List<QuizSubmission> quiz_submissions;
-    }
-
-    /**
      * @param canvasUrl URL to your canvas instance (Ex. https://test.instructure.com)
      * @param token     Bearer token used to authenticate with the Canvas API
      * @param courseId  Course which contains the desired quiz
@@ -69,9 +60,14 @@ public class QuizSubmissionController extends Controller
             return null;
         }
 
-        //QuizSubmissions submissions = new Gson().fromJson(json, QuizSubmissions.class);
-
         return new Gson().fromJson(json, QuizSubmissions.class).quiz_submissions;
-
+    }
+    
+    /**
+     * Private inner class for converting JSON into a QuizSubmission object properly.
+     */
+    private class QuizSubmissions
+    {
+        public List<QuizSubmission> quiz_submissions;
     }
 }
