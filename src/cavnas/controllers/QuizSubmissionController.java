@@ -54,11 +54,9 @@ public class QuizSubmissionController extends Controller
      * @param quizId    Quiz you want to get the submission from
      * @return Returns list of all submissions for this quiz based on the user permissions. If there is an error, it will return null.
      **/
-    public static QuizSubmission getQuizSubmissions(String canvasUrl, String token, Integer courseId, Integer quizId)
+    public static List<QuizSubmission> getQuizSubmissions(String canvasUrl, String token, Integer courseId, Integer quizId)
     {
         String json;
-        Quiz.Permissions permissions = new Quiz().new Permissions();
-        Quiz.LockInfo lockInfo = new Quiz().new LockInfo();
 
         try
         {
@@ -71,21 +69,9 @@ public class QuizSubmissionController extends Controller
             return null;
         }
 
-        QuizSubmissions submissions = new Gson().fromJson(json, QuizSubmissions.class);
+        //QuizSubmissions submissions = new Gson().fromJson(json, QuizSubmissions.class);
 
-        /**
-         * will return all submissions if user has manage or view permission
-         * will return single submission by user who can only submit
-         * will return a specific submission if a user has in_progress submissions
-         * will return all completed submissions including previous attempts when there is no an in_progress quiz_submission
-        **/
-        if ( submissions.quiz_submissions.size() > 0 )
-            if ( permissions.manage || lockInfo.can_view )
-                return (QuizSubmission) submissions.quiz_submissions;
-            else if ( permissions.submit )
-                return submissions.quiz_submissions.get(0);
-            //else if (use has in_progress submissions*/)
-            //   return that specific submission that is still in_progress
-        return null;
+        return new Gson().fromJson(json, QuizSubmissions.class).quiz_submissions;
+
     }
 }
