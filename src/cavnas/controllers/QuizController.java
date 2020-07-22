@@ -83,7 +83,7 @@ public class QuizController extends Controller
         if(perPage != null)
             urlString += (searchTerm == null ? "?" : "&") + "per_page=" + perPage;
         if(page != null)
-            urlString += (searchTerm == null && perPage == null ? "?" : "&") + "page=" + perPage;
+            urlString += (searchTerm == null && perPage == null ? "?" : "&") + "page=" + page;
 
         try
         {
