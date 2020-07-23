@@ -10,7 +10,6 @@ import java.net.URL;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Date;
 
 /**
  * Controller for all operations on quizzes in Canvas.
