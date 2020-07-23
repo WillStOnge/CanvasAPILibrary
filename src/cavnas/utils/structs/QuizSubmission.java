@@ -55,3 +55,5 @@ public class QuizSubmission
     @SerializedName("result_url")
     public String resultUrl;
 }
+
+
