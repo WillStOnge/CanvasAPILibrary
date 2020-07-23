@@ -1,7 +1,6 @@
 package cavnas.utils.structs;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.Date;
 
 public class QuizSubmission

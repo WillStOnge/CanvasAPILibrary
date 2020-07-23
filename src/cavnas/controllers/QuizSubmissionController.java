@@ -3,18 +3,17 @@ package cavnas.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import cavnas.utils.structs.Quiz;
 import cavnas.utils.structs.QuizSubmission;
 import com.google.gson.Gson;
 
 public class QuizSubmissionController extends Controller
 {
     /**
-     * @param canvasUrl    URL to your canvas instance (Ex. https://test.instructure.com)
-     * @param token        Bearer token used to authenticate with the Canvas API
-     * @param courseId     Course which contains the desired quiz
-     * @param quizId       Quiz you want to get the submission from
-     * @param submissionId Submission you want to retrieve
+     * @param canvasUrl URL to your canvas instance (Ex. https://test.instructure.com)
+     * @param token     Bearer token used to authenticate with the Canvas API
+     * @param courseId  Course which contains the desired quiz
+     * @param quizId    Quiz you want to get the submission from
+     * @param submissionId  Submission you want to retrieve
      * @return Returns list of all submissions for this quiz. If there is an error, it will return null.
      **/
     public static QuizSubmission getQuizSubmission(String canvasUrl, String token, Integer courseId, Integer quizId, Integer submissionId)
@@ -69,9 +68,6 @@ public class QuizSubmissionController extends Controller
             return null;
         }
 
-        //QuizSubmissions submissions = new Gson().fromJson(json, QuizSubmissions.class);
-
         return new Gson().fromJson(json, QuizSubmissions.class).quiz_submissions;
-
     }
 }
