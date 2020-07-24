@@ -78,7 +78,7 @@ public class QuizController extends Controller
         Type quizList = new TypeToken<List<Quiz>>(){}.getType();
         String urlString = canvasUrl + "/api/v1/courses/" + courseId + "/quizzes", jsonString;
 
-        if(searchTerm != null)
+        if(searchTerm != null && searchTerm != "")
             urlString += "?search_term=" + searchTerm;
         if(perPage != null)
             urlString += (searchTerm == null ? "?" : "&") + "per_page=" + perPage;
@@ -97,5 +97,29 @@ public class QuizController extends Controller
         }
 
         return new Gson().fromJson(jsonString, quizList);
+    }
+
+    /**
+     * @param   canvasUrl URL to your canvas instance (Ex. https://test.instructure.com)
+     * @param   token     Bearer token used to authenticate with the Canvas API
+     * @param   courseId  Course which contains the desired quizzes
+     * @param   quizId    Quiz that you would like to reorder
+     * @param   orderId   REQUIRED: the associated item's unique identifier
+     * @param   orderType The type of item is either 'question' or 'group', these are the only allowed values
+     * @return  "204 No Content" response code is returned if the reorder was successful
+     */
+    public static String postReorderQuizItems(String canvasUrl, String token, Integer courseId, Integer quizId, Integer orderId, String orderType)
+    {
+        try
+        {
+            URL url = new URL(canvasUrl + "/api/v1/courses/" + courseId + "/quizzes/" + quizId + "/reorder");
+            String json = "{\"order[][id]\":" + orderId + (orderType == null ? null : " \"order[][type]\":\"" + orderType + "\"") + "}";
+            return run(Method.POST, url, token, json);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

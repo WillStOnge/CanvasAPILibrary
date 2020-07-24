@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 
 public class QuizSubmissionController extends Controller
 {
+
     /**
      * @param canvasUrl    URL to your canvas instance (Ex. https://test.instructure.com)
      * @param token        Bearer token used to authenticate with the Canvas API
