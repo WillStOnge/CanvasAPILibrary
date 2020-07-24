@@ -44,7 +44,7 @@ public class QuizSubmissionController extends Controller
      * @param token     Bearer token used to authenticate with the Canvas API
      * @param courseId  Course which contains the desired quiz
      * @param quizId    Quiz you want to get the submission from
-     * @return Returns list of all submissions for this quiz based on the user permissions. If there is an error, it will return null.
+     * @return Returns list of all submissions for this quiz. If there is an error, it will return null.
      **/
     public static List<QuizSubmission> getQuizSubmissions(String canvasUrl, String token, Integer courseId, Integer quizId)
     {
