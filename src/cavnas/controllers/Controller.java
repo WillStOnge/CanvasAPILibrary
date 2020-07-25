@@ -1,46 +1,63 @@
 package cavnas.controllers;
 
+import com.google.gson.Gson;
+import okhttp3.*;
+
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.LinkedHashMap;
 
 /**
  * Base class for all controllers in this library.
  */
 public class Controller
 {
-    protected static String run(Method method, URL endpoint, String token, String jsonParams) throws IOException
+    protected static String run(Method method, URL endpoint, String token, LinkedHashMap<String, String> params) throws IOException
     {
-        // Create new connection to the URL.
-        HttpURLConnection conn = (HttpURLConnection) endpoint.openConnection();
-        conn.setRequestMethod(method.getName());
-        conn.setRequestProperty("Content-Type", "application/JSON");
-        conn.setRequestProperty("Authorization", "Bearer " + token);
-        conn.setDoOutput(true);
+        OkHttpClient client = new OkHttpClient(); // Client
+        MediaType JSON = MediaType.get("application/json; charset=utf-8"); // JSON param type
+        String json = new Gson().toJson(params); // Convert params to JSON
+        Request request; // Initialize request
+        HttpUrl.Builder url = HttpUrl.parse(endpoint.toString()).newBuilder(); // URL Builder
+        Request.Builder builder = new Request.Builder().addHeader("Authorization", "Bearer " + token); // Request Builder
+        RequestBody body = RequestBody.create(json, JSON);
 
-        // If there are parameters, send them to the endpoint
-        if (jsonParams != null)
+        // Build url depending on HTTP method
+        if (method.getName() == "PUT" || method.getName() == "POST")
+            builder.url(endpoint);
+        else
         {
-            try (OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream(), "UTF-8"))
-            {
-                writer.write(jsonParams);
-                writer.flush();
-            }
+            if (params != null)
+                params.forEach((k, v) -> url.addQueryParameter(k, v));
+            builder.url(url.build());
         }
 
-        StringBuilder response = new StringBuilder();
-
-        // Read the response from the endpoint. If the response code isn't 200, it will throw an IOException
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8")))
+        switch (method.getName())
         {
-            String s;
-
-            while ((s = in.readLine()) != null)
-                response.append(s);
+            case "GET":
+                builder.get();
+                break;
+            case "POST":
+                builder.post(body);
+                break;
+            case "PUT":
+                builder.put(body);
+                break;
+            case "DELETE":
+                builder.delete();
+                break;
         }
 
-        // Return response
-        return response.toString();
+        request = builder.build();
+
+        // Call endpoint and return response's body
+        try (Response response = client.newCall(request).execute())
+        {
+            if (response.isSuccessful())
+                return response.body().string();
+            else
+                throw new IOException("API call failed with code: " + response.code() + " and body: " + response.body().string());
+        }
     }
 }
 
