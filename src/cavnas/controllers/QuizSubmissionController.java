@@ -62,7 +62,7 @@ public class QuizSubmissionController extends Controller
 
         return new Gson().fromJson(json, QuizSubmissions.class).quiz_submissions;
     }
-    
+
     /**
      * Private inner class for converting JSON into a QuizSubmission object properly.
      */

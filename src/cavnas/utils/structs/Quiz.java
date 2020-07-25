@@ -2,7 +2,7 @@ package cavnas.utils.structs;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -42,11 +42,11 @@ public class Quiz
     @SerializedName("ip_filter")
     public String ipFilter;
     @SerializedName("due_at")
-    public Date dueAt;
+    public ZonedDateTime dueAt;
     @SerializedName("lock_at")
-    public Date lockAt;
+    public ZonedDateTime lockAt;
     @SerializedName("unlock_at")
-    public Date unlockAt;
+    public ZonedDateTime unlockAt;
     public boolean published;
     @SerializedName("lockedForUser")
     public boolean locked_for_user;
@@ -57,9 +57,9 @@ public class Quiz
     @SerializedName("hide_results")
     public String hideResults;
     @SerializedName("showCorrectAnswersAt")
-    public Date show_correct_answers_at;
+    public ZonedDateTime show_correct_answers_at;
     @SerializedName("hideCorrectAnswersAt")
-    public Date hide_correct_answers_at;
+    public ZonedDateTime hide_correct_answers_at;
     @SerializedName("all_dates")
     public List<AllDate> allDates;
     @SerializedName("can_update")
@@ -104,7 +104,7 @@ public class Quiz
     public class LockInfo
     {
         @SerializedName("lock_at")
-        public Date lockAt;
+        public ZonedDateTime lockAt;
         @SerializedName("can_view")
         public boolean canView;
         @SerializedName("asset_string")
@@ -117,11 +117,11 @@ public class Quiz
     public class AllDate
     {
         @SerializedName("due_at")
-        public Date dueAt;
+        public ZonedDateTime dueAt;
         @SerializedName("unlock_at")
-        public Date unlockAt;
+        public ZonedDateTime unlockAt;
         @SerializedName("lock_at")
-        public Date lockAt;
+        public ZonedDateTime lockAt;
         public boolean base;
     }
 
