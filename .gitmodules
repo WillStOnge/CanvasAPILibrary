@@ -1,3 +1,6 @@
 [submodule "lib/gson"]
 	path = lib/gson
 	url = git://github.com/google/gson
+[submodule "lib/okhttp"]
+	path = lib/okhttp
+	url = git://github.com/square/okhttp
